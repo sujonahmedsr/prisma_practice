@@ -14,16 +14,15 @@ datasource db {
 }
 
 model Post {
-  id        Int      @id @default(autoincrement())
-  title     String   @db.VarChar(255)
-  content   String
-  published Boolean  @default(false)
-  authorId  Int
-  author User @relation(fields: [authorId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id           Int            @id @default(autoincrement())
+  title        String         @db.VarChar(255)
+  content      String
+  published    Boolean        @default(false)
+  authorId     Int
+  author       User           @relation(fields: [authorId], references: [id])
   postCategory PostCategory[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
 }
 
 model User {
@@ -32,30 +31,29 @@ model User {
   email    String   @unique
   role     userRole @default(user)
   age      Int      @default(0)
-  profile Profile?
-  Post Post[]
+  profile  Profile?
+  Post     Post[]
 }
 
 model Profile {
   id     Int     @id @default(autoincrement())
   bio    String?
-  userId Int @unique
+  userId Int     @unique
   user   User    @relation(fields: [userId], references: [id])
 }
 
 model Category {
-  id   Int    @id @default(autoincrement())
-  name String
-
+  id           Int            @id @default(autoincrement())
+  name         String
   PostCategory PostCategory[]
 }
 
 model PostCategory {
-  postId Int
-  post Post @relation(fields: [postId], references: [id])
+  postId     Int
+  post       Post     @relation(fields: [postId], references: [id])
   categoryId Int
-  category Category @relation(fields: [categoryId], references: [id])
-  
+  category   Category @relation(fields: [categoryId], references: [id])
+
   @@id([postId, categoryId])
 }
 
