@@ -1,34 +1,54 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, userRole } from "@prisma/client";
 
 const prisma = new PrismaClient()
 
 const main = async () => {
-    // create one 
-    const createPost = await prisma.post.create({
+    // create user 
+    const createUser = await prisma.user.create({
         data: {
-            title: "This is title",
-            content: "this is content",
-            authorName: "sujon"
+            userName: "shoifqulIslam2",
+            email: "shofiqul2@gmail.com",
+            role: userRole.user
         }
     })
-    // console.log(createPost);
+    // console.log(createUser);
 
-    // create many 
-    const createPostMany = await prisma.post.createMany({
-        data: [
-            {
-                title: "This is title",
-                content: "this is content",
-                authorName: "sujon"
-            },
-            {
-                title: "This is title2",
-                content: "this is content2",
-                authorName: "sujon2"
-            }
-        ]
+    // create profile 
+    const createProfile = await prisma.profile.create({
+        data: {
+            bio: "This is bio...",
+            userId: 1
+        }
     })
-    // console.log(createPostMany); 
+    // console.log(createProfile);
+
+    // create category 
+    const createCategory = await prisma.category.create({
+        data: {
+            name: "software engineering"
+        }
+    })
+    // console.log(createCategory);
+
+    // create post 
+    const createPost = await prisma.post.create({
+        data: {
+            title: "this is title 5",
+            content: "this is content of the post. 5",
+            authorId: 1,
+            postCategory: {
+                create: [
+                    {
+                        categoryId: 1
+                    }
+                ]
+            }
+        },
+        include: {
+            postCategory: true
+        }
+    })
+    // console.log(createPost)
 }
 
 main()
